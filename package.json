@@ -1,0 +1,17 @@
+{
+    "name"         : "node-red-contrib-solace",
+    "version"      : "0.0.1",
+    "description"  : "Publish/Subscribe using Solace Systems message routers and node-red",
+    "dependencies": {
+        "solclientjs": "7.0.0-12"
+    },
+    "scripts": {
+        "preinstall": "npm install ./node-solclientjs-7.0.0.12.tar.gz"
+    },
+    "keywords": [ "node-red", "solace", "pubsub" ],
+    "node-red"     : {
+        "nodes": {
+            "solace": "solace/solace.js"
+        }
+    }
+}
