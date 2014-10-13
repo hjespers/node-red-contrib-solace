@@ -1,6 +1,7 @@
 {
     "name"         : "node-red-contrib-solace",
-    "version"      : "0.0.1",
+    "version"      : "0.0.2",
+    "private": true,
     "description"  : "Publish/Subscribe using Solace Systems message routers and node-red",
     "dependencies": {
         "solclientjs": "7.0.0-12"

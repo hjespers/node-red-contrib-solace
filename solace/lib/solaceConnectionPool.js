@@ -16,7 +16,7 @@
  */
 var util = require("util");
 //var solacePool = require("./solclientjs-debug");
-var solacePool = require("solclientjs");
+var solacePool = require("solclientjs-debug");
 
 var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
 
