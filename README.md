@@ -5,7 +5,7 @@ Node-Red (http://nodered.org) nodes for communicating with a Solace Systems mess
 
 #Install
 
-If you haven't already done so, install node-red and change cd to the node-red root directory
+If you haven't already done so, install node-red and change to the node-red root directory
 
     npm install node-red
     cd node_modules/node-red
@@ -41,7 +41,6 @@ You should see orange solace input and output nodes in the pallet on the left si
     <li>input <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/solace_input_node.png"></li>
     <li>output <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/solace_output_node.png"></li>
 </ul>
-
 
 
 Drag either solace node to the canvas and double click to configure the topic, broker, and message type
