@@ -36,9 +36,12 @@ Start node-red as normal
 
 Point your browser to http://localhost:1880
 
-You should see orange solace input <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/solace_input_node.png">
-and output <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/solace_output_node.png">
-nodes in the pallet on the left side of the screen.
+You should see orange solace input and output nodes in the pallet on the left side of the screen.
+<ul>
+    <li>input <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/solace_input_node.png"></li>
+    <li>output <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/solace_output_node.png"></li>
+</ul>
+
 
 
 Drag either solace node to the canvas and double click to configure the topic, broker, and message type
@@ -53,7 +56,7 @@ Click on the pencil icon to the right of the broker selection box to configure a
 Publish and subscribe just as you would with the mqtt node with some small differences namely:
 <ul>
     <li>the leading "/" of a topic name is implicit and not required</li>
-    <li>the solace wildcard characters are "*" and ">" rather than "+" and "#" (respectively)</li>
+    <li>the solace wildcard characters are "*" and ">" rather than MQTT wildcards "+" and "#" (respectively)</li>
     <li>the solace web streaming transport works over http(s)
 </ul>
 
@@ -64,7 +67,7 @@ A sample flow with wildcard subscriptions is provided in the flows subdirectory
 #Usage
 
 You will need access to a Solace Systems message router (URL, Login, Password, and Message VPN).
-A demo sandbox is available on the public internet with the configuration data shown above in the solace-broker config dialog box. Use the super secret password whci is "password".
+A demo sandbox is available on the public internet with the configuration data shown above in the solace-broker config dialog box. Use the super secret password which is "password".
 
 # Authors
 
