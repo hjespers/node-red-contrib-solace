@@ -15,7 +15,9 @@
  *
  */
 var util = require("util");
-var solacePool = require('solclientjs').debug;
+//var solacePool = require("./solclientjs-debug");
+//var solacePool = require("../../node_modules/solclientjs/lib/solclientjs-debug.js");
+var solacePool = require("solclientjs").debug;
 
 var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
 
@@ -355,7 +357,6 @@ module.exports = {
 										var message = solacePool.SolclientFactory.createMessage();
 
 										message.setDestination(pubTopic);
-
 										if (msgtype == "TEXT" || msgtype == "XML") {
 											//message.setXmlContent(payload);
 											message.setXmlMetadata(msgtype);
@@ -427,7 +428,6 @@ module.exports = {
 									var message = solacePool.SolclientFactory.createMessage();
 									
 									message.setDestination(pubTopic);
-
 									if (msgtype == "TEXT" || msgtype == "XML") {
 										//message.setXmlContent(payload);
 										message.setXmlMetadata(msgtype);
@@ -480,12 +480,21 @@ module.exports = {
 										//message.setXmlContent(msg.payload);
 										message.setXmlMetadata(msg.msgtype);
 										message.setUserData(msg.msgtype);
-										message.setSdtContainer(solacePool.SDTField.create(solacePool.SDTFieldType.STRING, msg.payload));
+										if ( typeof(msg.payload) !== 'string') {
+											//console.log('publishing non-string payload, stringifying first...');
+											message.setSdtContainer(solacePool.SDTField.create(solacePool.SDTFieldType.STRING, JSON.stringify(msg.payload)));
+										} else {
+											message.setSdtContainer(solacePool.SDTField.create(solacePool.SDTFieldType.STRING, msg.payload));
+										}
 										mySession.send(message);
 									}
 									if (msg.msgtype == "BINARY") {
 										message.setUserData(msg.msgtype);
-										message.setBinaryAttachment(msg.payload);
+										if ( typeof(msg.payload) !== 'string') {
+											console.log("Error creating BINARY payload, did you provide binary data as a string (i.e. octet-stream)?");
+										} else {
+											message.setBinaryAttachment(msg.payload);
+										}
 										mySession.send(message);
 									}
 									if (msg.msgtype == "MAP") {
