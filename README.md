@@ -1,7 +1,7 @@
 node-red-contrib-solace
 ========================
 
-Node-Red (http://nodered.org) nodes for communicating with a Solace Systems message router.
+Node-Red (http://nodered.org) nodes for communicating with a Solace Systems message router (see http://www.solacesystems.com).
 
 #Install
 
@@ -17,8 +17,7 @@ You will need access to a Solace Systems message router (URL, Login, Password, a
 
 # Authors
 
-Hans Jespersen -  https://github.com/hjespers
-Heinz Schaffner 
+Hans Jespersen -  https://github.com/hjespers and Heinz Schaffner 
 
 #Feedback and Support
 
