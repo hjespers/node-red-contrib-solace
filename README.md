@@ -41,15 +41,14 @@ and output <img src="https://github.com/hjespers/node-red-contrib-solace/blob/ma
 nodes in the pallet on the left side of the screen.
 
 
-Drag either solace node to the canvas and click to configure the topic and message type
+Drag either solace node to the canvas and double click to configure the topic, broker, and message type
 
 <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/edit_solace_node.png">
 
 
-Click on the ??? to configure a solace broker connection if one does not already exist.
+Click on the pencil icon to the right of the broker selection box to configure a solace broker connection if one does not already exist.
 
 <img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/images/edit_solace_broker_config.png">
-
 
 Publish and subscribe just as you would with the mqtt node with some small differences namely:
 <ul>
@@ -57,6 +56,10 @@ Publish and subscribe just as you would with the mqtt node with some small diffe
     <li>the solace wildcard characters are "*" and ">" rather than "+" and "#" (respectively)</li>
     <li>the solace web streaming transport works over http(s)
 </ul>
+
+A sample flow with wildcard subscriptions is provided in the flows subdirectory
+
+<img src="https://github.com/hjespers/node-red-contrib-solace/blob/master/flows/sample_solace_pubsub_flow.png">
 
 #Usage
 
