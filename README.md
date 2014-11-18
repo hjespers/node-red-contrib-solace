@@ -14,9 +14,7 @@ Run the following command in the root directory of your node-red install
 
     npm install node-red-contrib-solace
 
-Edit your settings.js (also in the node-red root directory) and add the following Solace configuration parameters anywhere after the line that looks like
-
-    module.exports = {
+Edit your settings.js (also in the node-red root directory) and add the following Solace configuration parameters anywhere after module.exports = {
 
     // Retry time in milliseconds for Solace connections
     solaceReconnectTries: 0,
@@ -31,6 +29,21 @@ Edit your settings.js (also in the node-red root directory) and add the followin
     subscriberLocalPriority: 1,
     subscriberNetworkPriority: 1,
     noLocal: false,
+
+Start node-red as normal
+
+    node red -v
+
+Point your browser to http://localhost:1880
+
+You should see orange solace input and output nodes in the pallet on the left side of the screen.
+
+Drag either solace node to the canvas and click to configure a solace broker connection.
+
+Publish and subscribe just as you would with the mqtt node.
+
+
+
 
 #Usage
 
