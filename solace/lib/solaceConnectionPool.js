@@ -15,7 +15,11 @@
  *
  */
 var util = require("util");
-var solacePool = require("solclientjs").debug;
+if(settings.solaceLogLevel > 2 ) {
+	var solacePool = require("solclientjs").debug;
+} else {
+	var solacePool = require("solclientjs");
+}
 var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
 var connections = {};
 
