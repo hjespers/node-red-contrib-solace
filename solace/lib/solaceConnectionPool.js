@@ -324,7 +324,7 @@ module.exports = {
 					if (event.sessionEventCode === solacePool.SessionEventCode.UP_NOTICE) {
 						retryCount = settings.solaceReconnectTries || 0;
 						
-						util.log('[solace] session connected to broker');
+						util.log('[solace] session connected: ' + ref);
 						
 						for (var r in registerStatus) {
 							registerStatus[r].statusCallback("connected");
@@ -403,7 +403,6 @@ module.exports = {
 
 						}
 						
-						util.log("[solace] retry attempts left = " + retryCount + " for session: " + ref);
 						if((retryCount > 0 && deployed) || (settings.solaceReconnectTries == 0 && deployed))
 						{
 							if(settings.solaceReconnectTries == 0){
@@ -418,7 +417,7 @@ module.exports = {
 	                            	util.log('[solace] error connecting session: ' + e);
 	                            }
 	                            retryCount = retryCount - 1;
-	                        }, settings.solaceReconnectTime||5000);	   // OR of two numbers results in what?                      
+	                        }, settings.solaceReconnectTime||5000);	                      
 						}
 					}
 					
