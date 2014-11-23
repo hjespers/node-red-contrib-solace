@@ -42,11 +42,11 @@ function createMap(payload) {
 				map.addField(k ,solacePool.SDTFieldType.UNKNOWN ,payload[k]);
 			}
 			if(settings.solaceLogLevel > 2 ) {
-				console.log("key: " + k + " value: " + payload[k]);
+				util.log("[solace] key: " + k + " value: " + payload[k]);
 			}
 		});
 	} catch(err) {
-		console.log("Caught error creating Map: " + err);
+		util.log("[solace] caught error creating Map: " + err);
 		return null;
 	}
 	return map;
@@ -72,7 +72,7 @@ function createStream(payload) {
 					stream.addField(solacePool.SDTFieldType.UNKNOWN ,payload[k]);
 				}
 				if(settings.solaceLogLevel > 2 ) {
-					console.log("Stream key: " + k + " value: " + payload[k]);
+					util.log("[solace] stream key: " + k + " value: " + payload[k]);
 				}
 			});
 		} else { // input values are in an array
@@ -91,12 +91,12 @@ function createStream(payload) {
 					stream.addField(solacePool.SDTFieldType.UNKNOWN , item);
 				}
 				if(settings.solaceLogLevel > 2 ) {
-					console.log("Stream value: " + item);
+					util.log("[solace] stream value: " + item);
 				}
 			}
 		}
 	} catch(err) {
-		console.log("Caught error creating Map: " + err);
+		util.log("[solace] caught error creating Map: " + err);
 		return null;
 	}
 	return stream;
@@ -184,15 +184,15 @@ module.exports = {
 		
 
 		if(settings.solaceLogLevel > 2 ) {
-			 console.log("From \"settings.js\" the value of solaceReconnectTime: " + settings.solaceReconnectTime);
-			 console.log("From \"settings.js\" the value of solaceReconnectTries: " + settings.solaceReconnectTries);
-			 console.log("From \"settings.js\" the value of generateSequenceNumber: " + settings.generateSequenceNumber);
-			 console.log("From \"settings.js\" the value of includeSenderId: " + settings.includeSenderId);
-			 console.log("From \"settings.js\" the value of generateSendTimestamps: " + settings.generateSendTimestamps);
-			 console.log("From \"settings.js\" the value of generateReceiveTimestamps: " + settings.generateReceiveTimestamps);
-			 console.log("From \"settings.js\" the value of subscriberLocalPriority: " + settings.subscriberLocalPriority);
-			 console.log("From \"settings.js\" the value of subscriberNetworkPriority: " + settings.subscriberNetworkPriority);
-			 console.log("From \"settings.js\" the value of noLocal: " + settings.noLocal);
+			 util.log("[solace] From \"settings.js\" the value of solaceReconnectTime: " + settings.solaceReconnectTime);
+			 util.log("[solace] From \"settings.js\" the value of solaceReconnectTries: " + settings.solaceReconnectTries);
+			 util.log("[solace] From \"settings.js\" the value of generateSequenceNumber: " + settings.generateSequenceNumber);
+			 util.log("[solace] From \"settings.js\" the value of includeSenderId: " + settings.includeSenderId);
+			 util.log("[solace] From \"settings.js\" the value of generateSendTimestamps: " + settings.generateSendTimestamps);
+			 util.log("[solace] From \"settings.js\" the value of generateReceiveTimestamps: " + settings.generateReceiveTimestamps);
+			 util.log("[solace] From \"settings.js\" the value of subscriberLocalPriority: " + settings.subscriberLocalPriority);
+			 util.log("[solace] From \"settings.js\" the value of subscriberNetworkPriority: " + settings.subscriberNetworkPriority);
+			 util.log("[solace] From \"settings.js\" the value of noLocal: " + settings.noLocal);
 		}
 		
 		if (!connections[id]) {
@@ -252,12 +252,12 @@ module.exports = {
 					var destination = message.getDestination().getName();
 					
 					if(settings.solaceLogLevel > 2 ) {
-						console.log("Solace Message Type: " + message.getType());
-						console.log("Solace Text message type: " + solacePool.MessageType.TEXT);
-						console.log("Solace BINARY message type: " + solacePool.MessageType.BINARY);
-						console.log("Solace MAP message type: " + solacePool.MessageType.MAP);
-						console.log("Solace STREAM message type: " + solacePool.MessageType.STREAM);
-						console.log("User Data: " + message.getUserData());
+						util.log("[solace] Message Type: " + message.getType());
+						util.log("[solace] Text message type: " + solacePool.MessageType.TEXT);
+						util.log("[solace] BINARY message type: " + solacePool.MessageType.BINARY);
+						util.log("[solace] MAP message type: " + solacePool.MessageType.MAP);
+						util.log("[solace] STREAM message type: " + solacePool.MessageType.STREAM);
+						util.log("[solace] User Data: " + message.getUserData());
 					}
 					
 					for (var s in subscriptions) {
@@ -290,7 +290,7 @@ module.exports = {
 								for (var i = 0; i < allKeys.length; i++) {
 									var stdField = map.getField(allKeys[i]);
 									if(settings.solaceLogLevel > 2 ) {
-										console.log("Map message key: " + allKeys[i] + " value: " + stdField.getValue());
+										util.log("[solace] map message key: " + allKeys[i] + " value: " + stdField.getValue());
 									}
 									tempMsg[allKeys[i]] = stdField.getValue();
 								}
@@ -303,7 +303,7 @@ module.exports = {
 								while(stream.hasNext()) {
 									tempMsg[count] = stream.getNext().getValue();
 									if(settings.solaceLogLevel > 2 ) {
-										console.log("Stream value: " + tempMsg[count]);
+										util.log("[solace] stream value: " + tempMsg[count]);
 									}
 									count++;
 								}
@@ -316,14 +316,13 @@ module.exports = {
 				var eventCallback = new solacePool.SessionEventCBInfo(function(session, event) {
 					
 					if(settings.solaceLogLevel > 2 ) {
-						console.log(event.toString());
+						util.log('[solace] received session event: ' + event.toString());
 					}
-
 
 					if (event.sessionEventCode === solacePool.SessionEventCode.UP_NOTICE) {
 						retryCount = settings.solaceReconnectTries || 0;
 						if(settings.solaceLogLevel > 2) {
-							console.log(event.toString());
+							util.log('[solace] received session event: ' + event.toString());
 						}
 					
 						
@@ -341,7 +340,7 @@ module.exports = {
 							try {
 								mySession.subscribe(subTopic, requestConfirmation, corrID);
 							} catch(e){
-								console.log('solace error subscribing to topic (' + subTopic + '): ' + e);
+								util.log('[solace] error subscribing to topic (' + subTopic + '): ' + e);
 							}
 						}
 						
@@ -369,7 +368,7 @@ module.exports = {
 									if (msgtype == "BINARY") {
 										message.setUserData(msgtype);
 										if ( typeof(payload) !== 'string') {
-											console.log("Solace error creating BINARY payload, did you provide binary data as a string (i.e. octet-stream)?");
+											util.log("[solace] error creating BINARY payload, data not formatted as a string (i.e. octet-stream)");
 										} else {
 											message.setBinaryAttachment(payload);
 										}
@@ -388,7 +387,7 @@ module.exports = {
 									try {
 										mySession.send(message);
 									} catch (e) {
-										console.log('Solace error sending message: ' + e);
+										util.log('[solace] error sending message: ' + e);
 									}
 								}
 							}
@@ -397,26 +396,26 @@ module.exports = {
 					
 					if (event.sessionEventCode === solacePool.SessionEventCode.DISCONNECTED || event.sessionEventCode === solacePool.SessionEventCode.DOWN_ERROR) {
 						if(settings.solaceLogLevel > 2 ) {
-							console.log(event.toString());
+							util.log('[solace] received session event: ' + event.toString());
 						}
 						for (var r in registerStatus) {
 							registerStatus[r].statusCallback("disconnected");
 
 						}
 						
-						console.log("Retry attempts left = " + retryCount + " for session: " + ref);
+						util.log("[solace] retry attempts left = " + retryCount + " for session: " + ref);
 						if((retryCount > 0 && deployed) || (settings.solaceReconnectTries == 0 && deployed))
 						{
 							if(settings.solaceReconnectTries == 0){
-								console.log("Retry attempts left = " + "infinite" + " for session: " + ref);
+								util.log("[solace] retry attempts left = " + "infinite" + " for session: " + ref);
 							} else {
-								console.log("Retry attempts left = " + retryCount + " for session: " + ref);
+								util.log("[solace] retry attempts left = " + retryCount + " for session: " + ref);
 							}
 	                        setTimeout(function() {
 	                            try {
 									mySession.connect();
 	                            } catch (e) {
-	                            	console.log('solace error connecting session: ' + e);
+	                            	util.log('[solace] error connecting session: ' + e);
 	                            }
 	                            retryCount = retryCount - 1;
 	                        }, settings.solaceReconnectTime||5000);	   // OR of two numbers results in what?                      
@@ -447,7 +446,7 @@ module.exports = {
 								if (msgtype == "BINARY") {
 									message.setUserData(msgtype);
 									if ( typeof(payload) !== 'string') {
-										console.log("solace error creating BINARY payload, did you provide binary data as a string (i.e. octet-stream)?");
+										util.log("[solace] error creating BINARY payload, data not formatted as a string (i.e. octet-stream)");
 									} else {
 										message.setBinaryAttachment(payload);
 									}
@@ -465,7 +464,7 @@ module.exports = {
 								try {
 									mySession.send(message);
 								} catch (e) {
-									console.log('Solace error sending message: ' + e);
+									util.log('[solace] error sending message: ' + e);
 								}
 							}
 						}	
@@ -475,7 +474,7 @@ module.exports = {
 				try {
 					var mySession = solacePool.SolclientFactory.createSession(mySessionProperties, messageCallback,eventCallback);
 				} catch(e) {
-					console.log('Solace error creating session: ' + e);
+					util.log('[solace] error creating session: ' + e);
 				}
 				
 
@@ -502,7 +501,7 @@ module.exports = {
 								if (msg.msgtype == "BINARY") {
 									message.setUserData(msg.msgtype);
 									if ( typeof(msg.payload) !== 'string') {
-										console.log("Error creating BINARY payload, did you provide binary data as a string (i.e. octet-stream)?");
+										util.log("[solace] error creating BINARY payload, data not formatted as a string (i.e. octet-stream)");
 									} else {
 										message.setBinaryAttachment(msg.payload);
 									}
@@ -518,7 +517,7 @@ module.exports = {
 										message.setSdtContainer(solacePool.SDTField.create(solacePool.SDTFieldType.MAP, map));
 										mySession.send(message);
 									} else {
-										console.log("Solace error creating MAP payload, did you provide a strucured object payload?");
+										util.log("[solace] error creating MAP payload, did you provide a strucured object payload?");
 									}
 								}
 								if (msg.msgtype == "STREAM") {
@@ -530,7 +529,7 @@ module.exports = {
 										message.setSdtContainer(solacePool.SDTField.create(solacePool.SDTFieldType.STREAM, stream));
 										mySession.send(message);
 									} else {
-										console.log("Solace error creating STREAM payload, did you provide a strucured object or array payload?");
+										util.log("[solace] error creating STREAM payload, did you provide a strucured object or array payload?");
 									}
 								}
 
@@ -539,7 +538,7 @@ module.exports = {
 							}
 							//console.log("Publishing on topic: " + msg.topic);
 						} catch(e) {
-							console.log('Solace publish error: ' + e);
+							util.log('[solace] publish error: ' + e);
 						}
 					},
 
@@ -557,7 +556,7 @@ module.exports = {
 								}
 							}
 						} catch(e) {
-							console.log('Solace connect error: ' + e);
+							util.log('[solace] connect error: ' + e);
 						}
 					},
 
@@ -574,7 +573,7 @@ module.exports = {
 
 								mySession.subscribe(subTopic, requestConfirmation, topic);
 							} catch(e) {
-								console.log('Solace subscribe error: ' + e);
+								util.log('[solace] subscribe error: ' + e);
 							}
 						}
 						
@@ -589,7 +588,7 @@ module.exports = {
 							delete connections[id];
 							//Need to check if the session was kill because of deploy or the reconnect logic starts and screws up and throws Red exception
 							deployed = false;
-							console.log("Solace Session Disconnected");
+							util.log("[solace] session disconnected");
 						}
 					},
 					
