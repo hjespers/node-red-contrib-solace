@@ -15,12 +15,14 @@
  *
  */
 var util = require("util");
+var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
+// load the correct client libraries based on the configured debug level
 if(settings.solaceLogLevel > 2 ) {
 	var solacePool = require("solclientjs").debug;
 } else {
 	var solacePool = require("solclientjs");
 }
-var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
+
 var connections = {};
 
 function createMap(payload) {
@@ -321,10 +323,8 @@ module.exports = {
 
 					if (event.sessionEventCode === solacePool.SessionEventCode.UP_NOTICE) {
 						retryCount = settings.solaceReconnectTries || 0;
-						if(settings.solaceLogLevel > 2) {
-							util.log('[solace] received session event: ' + event.toString());
-						}
-					
+						
+						util.log('[solace] session connected to broker');
 						
 						for (var r in registerStatus) {
 							registerStatus[r].statusCallback("connected");
@@ -395,9 +395,9 @@ module.exports = {
 					}
 					
 					if (event.sessionEventCode === solacePool.SessionEventCode.DISCONNECTED || event.sessionEventCode === solacePool.SessionEventCode.DOWN_ERROR) {
-						if(settings.solaceLogLevel > 2 ) {
-							util.log('[solace] received session event: ' + event.toString());
-						}
+						
+						util.log('[solace] session disconnect event received: ' + event.toString());
+						
 						for (var r in registerStatus) {
 							registerStatus[r].statusCallback("disconnected");
 

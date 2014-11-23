@@ -19,7 +19,9 @@ module.exports = function(RED) {
 	"use strict";
 	var solaceClient = require("./lib/solaceConnectionPool");
 	var util = require("util");
-	
+
+	// get the global settings so we can check log level for solace	
+	var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
 
 
 
@@ -93,15 +95,11 @@ module.exports = function(RED) {
 		if (this.brokerConfig) {
 
 			node.status({fill:"red",shape:"ring",text:"disconnected"});
-
-
-			
-			//this.myURL = this.brokerConfig.broker + ":" + this.brokerConfig.port;
+	
 			this.client = solaceClient.get((this.brokerConfig.broker + ":" + this.brokerConfig.port) , node.brokerConfig.username, node.brokerConfig.password, node.brokerConfig.vpn, node.brokerConfig.clientid  );
-			//console.log(this.client);
-			console.log("Created subscriber object for connection: " + this.client.ref + " instance: " + this.client[("_instances")] );
-			//console.log("Instance = " + this.client[("_instances")]);
-			
+			if(settings.solaceLogLevel > 2 ) {
+				util.log("[solace] created subscriber object for connection: " + this.client.ref + " instance: " + this.client[("_instances")] );
+			}			
 
 			this.client.registerStatus(function(status) {
 				if(status == "connected") {
@@ -120,7 +118,7 @@ module.exports = function(RED) {
 			
 
 		} else {
-			this.error("missing broker configuration");
+			this.error("[solace] missing broker configuration");
 		}
 		
 		
@@ -151,20 +149,12 @@ module.exports = function(RED) {
 		if (this.brokerConfig ) {
 
 			this.status({fill:"red",shape:"ring",text:"disconnected"});
-			
-			/*
-			console.log("Broker: " + this.brokerConfig.broker);
-			console.log("Port: " + this.brokerConfig.port);
-			console.log("Username: " + node.brokerConfig.username);
-			console.log("Password: " + node.brokerConfig.password);
-			console.log("VPN: " + node.brokerConfig.vpn);
-			console.log("ClientID: " + node.brokerConfig.clientid);
-			*/
-
 
 			this.client = solaceClient.get((this.brokerConfig.broker + ":" + this.brokerConfig.port) , node.brokerConfig.username, node.brokerConfig.password, node.brokerConfig.vpn, node.brokerConfig.clientid  );
-			console.log("Created publisher object for connection: " + this.client.ref + " instance: " + this.client[("_instances")] );
-			
+			if(settings.solaceLogLevel > 2 ) {
+				util.log("[solace] created publisher object for connection: " + this.client.ref + " instance: " + this.client[("_instances")] );
+			}
+
 			this.client.registerStatus(function(status) {
 				if(status == "connected") {
 					node.status({fill:"green",shape:"dot",text:"connected"});
@@ -177,7 +167,6 @@ module.exports = function(RED) {
 			this.client.connect();
 			
 			this.on("input",function(msg) {
-				//console.log("Message to publish from injector: topic=" + msg.topic + " payload=" + msg.payload + " local topic: " + this.topic + " local message Type: " + this.msgtype );
 				if (msg != null && msg.topic != "" && this.topic == "" ) {
 					this.client.publish({payload: msg.payload, topic: msg.topic, msgtype: this.msgtype});
 				}
@@ -186,12 +175,12 @@ module.exports = function(RED) {
 					this.client.publish({payload: msg.payload, topic: this.topic, msgtype: this.msgtype});
 				}
 				if(msg == null || (msg.topic == "" && this.topic == "")) {
-					console.log("Request to send a NULL message or NULL topic on session: " + this.client.ref + " object instance: " + this.client[("_instances")]);
+					util.log("[solace] request to send a NULL message or NULL topic on session: " + this.client.ref + " object instance: " + this.client[("_instances")]);
 				}
 			});
 
 		} else {
-			this.error("missing broker configuration");
+			this.error("[solace] missing broker configuration");
 		}
 
 
