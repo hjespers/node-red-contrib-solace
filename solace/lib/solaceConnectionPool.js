@@ -396,8 +396,12 @@ module.exports = {
 					
 					if (event.sessionEventCode === solacePool.SessionEventCode.DISCONNECTED || event.sessionEventCode === solacePool.SessionEventCode.DOWN_ERROR) {
 						
-						util.log('[solace] session disconnect event received: ' + event.toString());
-						
+						if(settings.solaceLogLevel > 2 ) {
+							util.log('[solace] session disconnect event received: ' + event.toString());
+						} else {
+							util.log('[solace] session disconnect event received');
+						}
+
 						for (var r in registerStatus) {
 							registerStatus[r].statusCallback("disconnected");
 
