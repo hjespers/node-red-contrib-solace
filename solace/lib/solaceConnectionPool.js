@@ -204,9 +204,7 @@ module.exports = {
 				var publications = [];
 				var registerStatus = [];
 				var deployed = true;
-				var callback;
-				retryCount = settings.solaceReconnectTries || 0;
-				var solaceLogLevel=settings.solaceLogLevel;
+				var retryCount = settings.solaceReconnectTries || 0;
 
 				
 				var mySessionProperties = new solacePool.SessionProperties();
@@ -333,7 +331,6 @@ module.exports = {
 						
 						for (var s in subscriptions) {
 							var topic = subscriptions[s].topic;
-							var callback = subscriptions[s].callback;
 							var corrID = subscriptions[s].corrID;
 							var subTopic = solacePool.SolclientFactory.createTopic(topic);
 							var requestConfirmation = true;
@@ -609,5 +606,5 @@ module.exports = {
 		return connections[id];
 	}
 
-}
+};
 
