@@ -65,8 +65,16 @@ A sample flow with wildcard subscriptions is provided in the flows subdirectory
 
 #Usage
 
-You will need access to a Solace Systems message router (URL, Login, Password, and Message VPN).
-A demo sandbox is available on the public internet with the configuration data shown above in the solace-broker config dialog box. Use the super secret password which is "password".
+You will need access to a Solace Systems message router, which acts as a multi-protocol message broker.
+
+#Test Sandbox
+
+You can try it live on the Solace Systems public message router available at:
+
+    URL: http://69.20.234.126:8134
+    Username: demouser
+    Password: password
+    VPN: demo
 
 # Authors
 
