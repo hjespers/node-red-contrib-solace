@@ -199,7 +199,7 @@ module.exports = {
         
         if (!connections[id]) {
             connections[id] = function() {
-                var ref = "[user:" + (username || "") +  "][clientID:" + (clientid || "") + "][vpn:" + (vpn || "") + "]@" + myurl;
+                var ref = "[username:" + (username || "") +  "][clientID:" + (clientid || "") + "][vpn:" + (vpn || "") + "]@" + myurl;
                 var subscriptions = [];
                 var publications = [];
                 var registerStatus = [];
@@ -208,6 +208,7 @@ module.exports = {
 
                 
                 var mySessionProperties = new solacePool.SessionProperties();
+                mySessionProperties.transportProtocol = solacePool.TransportProtocol.HTTP_BINARY_STREAMING;
                 mySessionProperties.reapplySubscriptions = true;
                 mySessionProperties.IgnoreDuplicateSubscriptionError = true;
                 mySessionProperties.userName = username;
