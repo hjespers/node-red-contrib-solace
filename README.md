@@ -7,17 +7,13 @@ Node-Red (http://nodered.org) nodes for communicating with a Solace Systems mess
 
 If you haven't already done so, install node-red
 
-    $ git clone git@github.com:node-red/node-red.git
-
-Install the pre-requisite modules. From the top-level directory of Node-RED, run:
-
-    $ npm install
+    $ sudo npm install -g node-red
 
 Then you can install the Solace node-red module 
 
-    $ npm install node-red-contrib-solace
+    $ sudo npm install -g node-red-contrib-solace
 
-Edit your settings.js (also in the node-red top level directory) and add the following Solace configuration parameters anywhere after module.exports = {
+Edit your settings.js and add the following Solace specific configuration parameters 
 
     // Retry time in milliseconds for Solace connections
     solaceReconnectTries: 0,
